@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora</title>
+</head>
+
+<style>
+    html ,body {
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        background: rgba(55, 26, 2, 0.9);
+        font-family: sans-serif;
+        font-weight: 100;
+        color: #fff;
+        font-family: 'Latin Modern Math', serif;
+    }
+    .container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+    .main {
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+        gap: 20px;
+        margin: 40px;
+        margin-top: 10px;
+    }
+    .calculadora {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+    }
+    .select {
+        flex-grow: 1;
+        background: blue;
+        padding: 10px;
+        border: 3px gray solid ;
+        padding: 5px;
+    }
+    .options {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        background: green;
+        height: 30%;
+        border: 3px gray solid ;
+        padding: 5px;
+    }
+    .result {
+        flex-grow: 1;
+        border: 3px gray solid ;
+        padding: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow-y: none;
+        flex-direction: column;
+    }
+    
+    table {
+        width: 800px;
+        border-collapse: collapse;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        text-align: center;
+        height: auto;
+    }
+    
+    th,
+    td {
+        padding: 15px;
+        background-color: rgba(255,255,255,0.2);
+        color: #fff;
+    }
+    
+    
+    thead {
+        th {
+            background-color: #55608f;
+        }
+    }
+    
+    tbody {
+        tr {
+            &:hover {
+                background-color: rgba(255,255,255,0.3);
+            }
+        }
+        td {
+            position: relative;
+            &:hover {
+                &:before {
+                    content: "";
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    top: -9999px;
+                    bottom: -9999px;
+                    background-color: rgba(255,255,255,0.2);
+                    z-index: -1;
+                }
+            }
+        }
+    }
+    .btn-options{
+        width: 250px;
+        height: 50px;
+        border: 2px #000000 solid;
+        cursor: pointer;
+        background: #f0f0f0;
+    }
+    .content-options{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        gap: 20px;
+    }
+    .active{
+        background: #55608f;
+        color: #f0f0f0;
+    }
+    
+    input{
+        text-align: center;
+        font-size: 20px;
+    }
+</style>
+<body>
+    <div class="container">
+        <h1 style="text-align: center;">Calculadora</h1>
+        <h1 style="text-align: center;" id="tipo-titel"></h1>
+        <div class="main">
+            <div class="calculadora">
+                <div class="options">
+                    <div class="content-options">
+                        <button class="btn-options" id="euler-mejorado">
+                            Euler Mejorado
+                        </button>
+                        <button class="btn-options" id="newton-raphson">
+                            Newton-Raphson
+                        </button>
+                        <button class="btn-options active" id="runge-kutta">
+                            Runge-Kutta 4to Orden
+                        </button>
+                    </div>
+                    <hr style="width: 100%;">
+                    <div id="content-valores" style="position: relative;">
+
+                    </div>
+                </div>
+                <div class="result" id="result">
+                    <h1 id="titel-result">
+                        No hay resultados
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        eulerMejorado = (func) => {
+
+            return (
+                ` <div style="margin-right: 10rem; margin-left: 10rem;">
+                    <div style="display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 2rem;">
+                        <label for="func_xy" style="font-size: 35px; display: flex; flex-direction: row; align-items: center; gap: 20px;">
+                            f(x, y) =
+                            <input type="text" style="height: 25px; padding: 2px;" id="func_xy">
+                        </label>
+                        <div style="display: flex; flex-direction: row; gap: 30px;">
+                            <label for="ini_y" style="font-size: 35px; display: flex; flex-direction: row; align-items: center; gap: 20px;">
+                                y(
+                                <input type="text" style="height: 25px; padding: 2px;" id="ini_y">
+                            </label>
+                            <label for="init_x" style="font-size: 35px; display: flex; flex-direction: row; align-items: center; gap: 20px;">
+                                ) = 
+                                <input type="text" style="height: 25px; padding: 2px;" id="init_x">
+                            </label>
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                        <label for="pasos_limit" style="font-size: 35px; display: flex; flex-direction: row; align-items: center; gap: 20px;">
+                            limite =
+                            <input type="text" style="height: 25px; padding: 2px;" id="pasos_limit">
+                        </label>
+                        <label for="paso_size" style="font-size: 35px; display: flex; flex-direction: row; align-items: center; gap: 20px;">
+                            h =
+                            <input type="text" style="height: 25px; padding: 2px;" id="paso_size">
+                        </label>
+                    </div>
+
+                    <button
+                        onclick="${func}"
+                        style="position: absolute; top: 0; right: 0; margin-right: 14px;
+                            width: 80px; height: 40px; cursor: pointer;">
+                        Calcular
+                    </button>
+                </div>`
+            )
+        };
+        newtonRaphson = (func) => {
+            return (
+                `<div style="display: flex; flex-direction: column; align-items: center; ">
+                    <div style="display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 2rem;  gap: 20px;">
+                        <div style="display: flex; flex-direction: row; gap: 20px;">
+                            <label for="init_x" style="font-size: 35px; display: flex; flex-direction: row; align-items: center; gap: 20px;">
+                                X inical = 
+                                <input type="text" style="height: 25px; padding: 2px;" id="init_x">
+                            </label>
+                            <label for="limit_decimal" style="font-size: 35px; display: flex; flex-direction: row; align-items: center; gap: 20px;">
+                                Cifras Decimales =
+                                <input type="text" style="height: 25px; padding: 2px;" id="limit_decimal" value="5">
+                            </label>
+                        </div>
+                    </div>
+                    <label for="func_xy" style="font-size: 35px; display: flex; flex-direction: row; align-items: center; gap: 20px;">
+                        f(x) =
+                        <input type="text" style="height: 25px; padding: 2px;" id="func_xy">
+                    </label>
+
+                    <button
+                        onclick="${func}"
+                        style="position: absolute; top: 0; right: 0; margin-right: 14px;
+                            width: 80px; height: 40px; cursor: pointer;">
+                        Calcular
+                    </button>
+                </div>`
+            )
+        }
+
+        async function postFetch(url, data) {
+            try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+            data = await response.json();
+            console.log(data);
+            return data;
+
+            }catch (error) {
+            console.error('Error:', error);
+            }
+        }
+
+        const rungeKuttaComponent = async () => {
+            const float = /^\d*\.?\d+$/;
+            if(float.test(document.getElementById('ini_y').value) === false) {
+                alert('El valor de Y inicial debe ser un numero');
+                return;
+            }else if(float.test(document.getElementById('init_x').value) === false) {
+                alert('El valor de X inicial debe ser un numero');
+                return;
+            }else if(float.test(document.getElementById('pasos_limit').value) === false) {
+                alert('El valor del limite debe ser un numero');
+                return;
+            }else if(float.test(document.getElementById('paso_size').value) === false) {
+                alert('El valor del paso debe ser un numero');
+                return;
+            }else if(document.getElementById('func_xy').value === '') {
+                alert('La funcion no puede estar vacia');
+                return;
+            }
+            const data = await postFetch('http://localhost:5000/api/runge-kutta', {
+                "y": parseFloat(document.getElementById('ini_y').value),
+                "x": parseFloat(document.getElementById('init_x').value),
+                "h": parseFloat(document.getElementById('paso_size').value),
+                "f": document.getElementById('func_xy').value,
+                "n": parseFloat(document.getElementById('pasos_limit').value)
+            });
+            const table = document.createElement('table');
+            const thead = document.createElement('thead');
+            const tbody = document.createElement('tbody');
+            thead.innerHTML = `<th>N</th><th>Xn</th><th>Yn</th><th>K1</th><th>K2</th><th>K3</th><th>K4</th>`;
+            table.appendChild(thead);
+            data.y.map((e,index) => {
+                const tr = document.createElement('tr');
+                renglon = `
+                    <td>${index}</td>
+                    <td>${data.x[index]}</td>
+                    <td>${data.y[index]}</td>
+                    <td>${data.k_s.k1[index]}</td>
+                    <td>${data.k_s.k2[index]}</td>
+                    <td>${data.k_s.k3[index]}</td>
+                    <td>${data.k_s.k4[index]}</td>
+                `
+                tr.innerHTML = renglon;
+                console.log(tr);
+                tbody.appendChild(tr);
+            });
+            table.appendChild(tbody);
+            document.getElementById('result').innerHTML = '';
+            document.getElementById('result').appendChild(table);
+        }
+        const newtonRaphsonComponent = async () => {
+            const float = /^\d*\.?\d+$/;
+            const int = /^\d*[1-9]\d*$/;
+            if(int.test(document.getElementById('limit_decimal').value) === false) {
+                alert('El valor de las cifras decimales debe ser un numero');
+                return;
+            }else if(float.test(document.getElementById('init_x').value) === false) {
+                alert('El valor de X inicial debe ser un numero');
+                return;
+            }else if(document.getElementById('func_xy').value === '') {
+                alert('La funcion no puede estar vacia');
+                return;
+            }
+            const data = await postFetch('http://localhost:5000/api/newton-raphson', {
+                "funcion": document.getElementById('func_xy').value,
+                "valor_inicial": parseFloat(document.getElementById('init_x').value),
+                "decimal": parseInt(document.getElementById('limit_decimal').value)
+            });
+            const table = document.createElement('table');
+            const thead = document.createElement('thead');
+            const tbody = document.createElement('tbody');
+            thead.innerHTML = `<th>N</th><th>Xn</th>`;
+            table.appendChild(thead);
+            data.x.map((e,index) => {
+                const tr = document.createElement('tr');
+                renglon = `
+                    <td>${index}</td>
+                    <td>${data.x[index]}</td>
+                `
+                tr.innerHTML = renglon;
+                console.log(tr);
+                tbody.appendChild(tr);
+            });
+            table.appendChild(tbody);
+            document.getElementById('result').innerHTML = '';
+            document.getElementById('result').appendChild(table);
+            // document.getElementById('titel-result').innerHTML = 'Runge-Kutta 4to Grado - Resultado';
+        }
+        const eulerMejoradoComponent = async () => {
+            const float = /^\d*\.?\d+$/;
+            if(float.test(document.getElementById('ini_y').value) === false) {
+                alert('El valor de Y inicial debe ser un numero');
+                return;
+            }else if(float.test(document.getElementById('init_x').value) === false) {
+                alert('El valor de X inicial debe ser un numero');
+                return;
+            }else if(float.test(document.getElementById('pasos_limit').value) === false) {
+                alert('El valor del limite debe ser un numero');
+                return;
+            }else if(float.test(document.getElementById('paso_size').value) === false) {
+                alert('El valor del paso debe ser un numero');
+                return;
+            }else if(document.getElementById('func_xy').value === '') {
+                alert('La funcion no puede estar vacia');
+                return;
+            }
+            const data = await postFetch('http://localhost:5000/api/euler-mejorado', {
+                "y": parseFloat(document.getElementById('ini_y').value),
+                "x": parseFloat(document.getElementById('init_x').value),
+                "h": parseFloat(document.getElementById('paso_size').value),
+                "f": document.getElementById('func_xy').value,
+                "n": parseFloat(document.getElementById('pasos_limit').value)
+            });
+            const table = document.createElement('table');
+            const thead = document.createElement('thead');
+            const tbody = document.createElement('tbody');
+            thead.innerHTML = `<th>N</th><th>Xn</th><th>Yn</th><th>Yp</th><th>Yr</th><th>error</th>`;
+            table.appendChild(thead);
+            data.yn.map((e,index) => {
+                const tr = document.createElement('tr');
+                renglon = `
+                    <td>${index}</td>
+                    <td>${data.x[index]}</td>
+                    <td>${data.yn[index]}</td>
+                    <td>${data.yp[index]}</td>
+                    <td>${data.yr[index]}</td>
+                    <td>${data.e[index]}</td>
+                `
+                tr.innerHTML = renglon;
+                console.log(tr);
+                tbody.appendChild(tr);
+            });
+            table.appendChild(tbody);
+            document.getElementById('result').innerHTML = '';
+            document.getElementById('result').appendChild(table);
+        }
+
+        
+        
+        const  actives = document.querySelectorAll('.btn-options');
+        actives.forEach((e) => {
+            e.addEventListener('click', () => {
+            if(e.classList.toString().includes('active')) return;
+            actives.forEach((e) => {
+                e.classList.remove('active');
+            });
+            e.classList.add('active');
+            switch (e.id) {
+                case 'runge-kutta':
+                    document.getElementById('result').innerHTML = '';
+                    document.getElementById('content-valores').innerHTML = eulerMejorado("rungeKuttaComponent()");
+                    document.getElementById('tipo-titel').innerHTML = 'Runge-Kutta 4to Grado';
+                    break;
+                case 'newton-raphson':
+                    document.getElementById('result').innerHTML = '';
+                    document.getElementById('content-valores').innerHTML = newtonRaphson("newtonRaphsonComponent()");
+                    document.getElementById('tipo-titel').innerHTML = 'Newton-Raphson';
+                    break;
+                case 'euler-mejorado':
+                    document.getElementById('result').innerHTML = '';
+                    document.getElementById('content-valores').innerHTML = eulerMejorado("eulerMejoradoComponent()");
+                    document.getElementById('tipo-titel').innerHTML = 'Euler Mejorado';
+                    break;
+                default:
+                    break;
+            }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('euler-mejorado').click();
+        });
+    </script>
+
+</body>
+</html>
