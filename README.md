@@ -9,6 +9,8 @@ Esat aplicacion esta echa para resolver problemas de
 - Newton-Raphson
 - Runge Kutta de Cuarto Orden
 
+Proyecto en [GitHub](https://github.com/AngelV130/calculadora-python).
+
 ---
 
 ### Instalación:
@@ -41,6 +43,29 @@ El proyecto incluye varias rutas de documentación que proporcionan información
 - **GET /api:** Esta ruta proporciona acceso a la documentación general del proyecto, que incluye una descripción de las características.
 
 - **GET /api/documentacion:** Esta ruta ofrece documentación específica sobre la API del proyecto. Aquí encontrarás detalles sobre los puntos finales disponibles, los parámetros esperados, los formatos de respuesta y ejemplos de solicitudes.
+
+
+> ### Importante  
+> Reglas.
+> - Indicar con " * " las multiplicaciones, no se aceptan dos caracteres juntos como "xy".<br> 
+> Ejemplo:<br>
+> Funcion Incorrecta: 2 * x y<br>
+> Funcion Correcta: 2 * x * y
+> - Indicar con " ** " las potencias, no se aceptan otros caracteres para indicarla como "^".<br> 
+> Ejemplo:<br>
+> Funcion Incorrecta: 2 * ( x ^ 2 ) y<br>
+> Funcion Correcta: 2 * ( x * * 2 ) * y
+> - Indicar con " e**(operacin) " el calculo del euler, no se aceptan "e(operacion)".<br> 
+> Ejemplo:<br>
+> Funcion Incorrecta: 2 * e( x ^ 2 x ) y<br>
+> Funcion Correcta: 2 * e**( ( x ^ 2 ) * x) * y
+> - Indicar con " √(operacin) " el calculo de la raiz, no se aceptan otras formas para calcular raiz.<br> 
+> Ejemplo:<br>
+> Funcion Incorrecta: 2 * √xy<br>
+> Funcion Correcta: 2 * √(x*y)
+> <br>
+> En el archivo ejemplos.txt estan algunos ejemplos de para probar los 3 metodos.
+
 
 ## Propietario del Proyecto
 

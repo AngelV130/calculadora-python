@@ -84,11 +84,11 @@ def euler_mejorado():
     if not es_funcion_valida(data['f']):
         return jsonify({'message': 'La función no es válida.', 'status': 402}), 402
 
-    n = 1.6             # Número de pasos
-    x = 1.0             # Punto inicial
-    y = 1.0             # Valor inicial
-    h = 0.1             # Tamaño del paso
-    f = "2*(x*y)"       # Función f(x, y)
+    n = data['n']             # Número de pasos
+    x = data['x']             # Punto inicial
+    y = data['y']             # Valor inicial
+    h = data['h']             # Tamaño del paso
+    f = data['f']       # Función f(x, y)
 
     e  = ['0.0']                        # Lista para almacenar los errores
     yn = [f"{y:.5f}"]                   # Lista para almacenar las aproximaciones de y
@@ -149,7 +149,7 @@ def runge_kutta_4th_order():
     ])
     if errors:
         return jsonify({'message': 'No se encontró un valor inicial para la función.', 'errors': errors, 'status': 402}), 402
-    if not es_funcion_valida(data['f']):
+    if not es_funcion_valida(data['f'].replace('√', '*')):
         return jsonify({'message': 'La función no es válida.', 'status': 402}), 402
 
     x_values = [data['x']] # Valores de la variable independiente
@@ -166,28 +166,32 @@ def runge_kutta_4th_order():
             eval(
                 f.replace('x', str(x_values[-1])).
                 replace('y', str(y_values[-1])).
-                replace('√', '*sympy.sqrt')
+                replace('√', 'sympy.sqrt').
+                replace('e**','math.exp')
                 )
             )
         k2 = float(
             eval(
                 f.replace('x', str(float(x_values[-1] + (h/2)))).
                 replace('y', str(float(y_values[-1] + (h/2*k1)))).
-                replace('√', '*sympy.sqrt')
+                replace('√', 'sympy.sqrt').
+                replace('e**','math.exp')
             )
             )
         k3 = float(
             eval(
                 f.replace('x', str(float(x_values[-1] + (h/2)))).
                 replace('y', str(float(y_values[-1] + (h/2*k2)))).
-                replace('√', '*sympy.sqrt')
+                replace('√', 'sympy.sqrt').
+                replace('e**','math.exp')
                 )
             )
         k4 = float(
             eval(
                 f.replace('x', str(float(x_values[-1] + h))).
                 replace('y', str(float(y_values[-1] + (h*k3)))).
-                replace('√', '*sympy.sqrt')
+                replace('√', 'sympy.sqrt').
+                replace('e**','math.exp')
             )   
             )
         
@@ -202,28 +206,32 @@ def runge_kutta_4th_order():
         eval(
             f.replace('x', str(x_values[-1])).
             replace('y', str(y_values[-1])).
-            replace('√', '*sympy.sqrt')
+            replace('√', 'sympy.sqrt').
+            replace('e**','math.exp')
             )
         )
     k2 = float(
         eval(
             f.replace('x', str(float(x_values[-1] + (h/2)))).
             replace('y', str(float(y_values[-1] + (h/2*k1)))).
-            replace('√', '*sympy.sqrt')
+            replace('√', 'sympy.sqrt').
+            replace('e**','math.exp')
         )
         )
     k3 = float(
         eval(
             f.replace('x', str(float(x_values[-1] + (h/2)))).
             replace('y', str(float(y_values[-1] + (h/2*k2)))).
-            replace('√', '*sympy.sqrt')
+            replace('√', 'sympy.sqrt').
+            replace('e**','math.exp')
             )
         )
     k4 = float(
         eval(
             f.replace('x', str(float(x_values[-1] + h))).
             replace('y', str(float(y_values[-1] + (h*k3)))).
-            replace('√', '*sympy.sqrt')
+            replace('√', 'sympy.sqrt').
+            replace('e**','math.exp')
         )   
         )
     

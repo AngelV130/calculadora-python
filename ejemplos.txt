@@ -1,0 +1,54 @@
+**En en archivo README.md esta el formato de como se deben ingresar la funciones
+
+#Ejemplos:
+
+#Euler mejorado valores:
+N1
+	"x":1,
+	"y":1,
+	"f":0.4*x*y,
+	"h":0.1,
+	"vf":2
+N2
+
+	"x":1,
+	"y":1,
+	"f":2*x*y,
+	"h":0.1,
+	"vf":1.5
+
+N3
+	"x":1,
+	"y":3,
+	"f":2*x*y,
+	"h":0.5,
+	"vf":5
+#Runge Kutta valores:
+N1
+	"f":x*√(y),
+	"x":1,
+	"y":4,
+	"xf":1.6,
+	"h":0.2
+N2
+	"f":-20*y+7*e**(-0.5*x),
+	"x":0,
+	"y":5,
+	"xf":0.1,
+	"h":0.01
+N3
+	"f":2*x*y,
+	"x":1,
+	"y":1,
+	"xf":1.5,
+	"h":0.1
+#NewtonRaphson valores:
+N1
+	"f":x**5-x-1=0,
+	"nDecimales":8
+N2
+	"f2":x**3-2*x-5=0,
+	"nDecimales":5
+N3
+	"f":x**2-3*x-4=0,
+	"nDecimales":8

@@ -245,10 +245,14 @@
             });
             data = await response.json();
             console.log(data);
+            if(data.status > 400){
+                document.getElementById('result').innerHTML = JSON.stringify(data);
+            }
             return data;
-
+                
             }catch (error) {
-            console.error('Error:', error);
+                console.error('Error:', error);
+                document.getElementById('result').innerHTML = 'Error verifique que los datos esten correctos';
             }
         }
 
@@ -270,6 +274,7 @@
                 alert('La funcion no puede estar vacia');
                 return;
             }
+            console.log(parseFloat(document.getElementById('init_x').value));
             const data = await postFetch('http://localhost:5000/api/runge-kutta', {
                 "y": parseFloat(document.getElementById('ini_y').value),
                 "x": parseFloat(document.getElementById('init_x').value),
