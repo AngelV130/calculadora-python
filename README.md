@@ -23,6 +23,7 @@ Para comenzar a utilizar el Proyecto Calculadora, sigue estos pasos de instalaci
 # Installa con estos comandos:
 
 pip install flask
+pip install flask-cors
 pip install sympy
 ```
 2. **Iniciar Proyecto:**
