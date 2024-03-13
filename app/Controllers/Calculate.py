@@ -95,11 +95,12 @@ def euler_mejorado():
     yr = [f"{calcular_euler(y):.5f}"]   # Lista para almacenar los valores reales
     xn = [f"{x:.1f}"]                   # Lista para almacenar los valores de x
     yp = ['0.0']
+    euler = math.e
 
     while x <= n:
-        func_res = float(eval(f.replace('x', str(x)).replace('y', str(y))))
+        func_res = float(eval(f.replace('x', str(x)).replace('y', str(y)).replace('√', 'math.sqrt').replace('e**','math.exp')))
         y_pred = y + h * func_res  # Predicción utilizando el método de Euler
-        y_corr = y + h / 2 * (func_res + float(eval(f.replace('x', str(x+h)).replace('y', str(y_pred)))))  # Corrección
+        y_corr = y + h / 2 * (func_res + float(eval(f.replace('x', str(x+h)).replace('y', str(y_pred)).replace('√', 'math.sqrt').replace('e**','math.exp'))))  # Corrección
         y = round(y_corr,8)  # Actualización de y
         x += h # Actualización de x
 
